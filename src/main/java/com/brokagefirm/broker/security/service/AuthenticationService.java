@@ -10,11 +10,8 @@ import com.brokagefirm.broker.security.api.request.AuthenticationRequest;
 import com.brokagefirm.broker.security.api.request.RegisterRequest;
 import com.brokagefirm.broker.security.api.response.AuthenticationResponse;
 import io.jsonwebtoken.ExpiredJwtException;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
-import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -24,7 +21,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import static com.brokagefirm.broker.entity.audit.AuditAwareImpl.SYSTEM_USER;
-import static com.brokagefirm.broker.security.SecurityParams.BEARER_PREFIX;
 
 @Profile("!disabled-security")
 @Service
@@ -51,9 +47,11 @@ public class AuthenticationService {
                 .build();
         var savedUser = brokerUserRepository.save(user);
         var jwtToken = jwtService.generateToken(user);
+        var refreshToken = jwtService.generateRefreshToken(user);
         saveUserToken(savedUser, jwtToken);
         return AuthenticationResponse.builder()
                 .accessToken(jwtToken)
+                .refreshToken(refreshToken)
                 .build();
     }
 
@@ -116,14 +114,11 @@ public class AuthenticationService {
     }
 
     @Transactional
-    public AuthenticationResponse refreshToken(HttpServletRequest request, HttpServletResponse response) throws BrokerGenericException {
-        final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
-        final String refreshToken;
+    public AuthenticationResponse refreshToken(String refreshToken) throws BrokerGenericException {
         final String username;
-        if (authHeader == null || !authHeader.startsWith(BEARER_PREFIX)) {
-            throw new BrokerGenericException(GenericExceptionMessages.AUTHORIZATION_HEADER_MISSING.getMessage());
+        if (refreshToken == null) {
+            throw new BrokerGenericException(GenericExceptionMessages.REFRESH_TOKEN_MISSING.getMessage());
         }
-        refreshToken = authHeader.substring(7);
         try {
             username = jwtService.extractUsername(refreshToken);
         } catch (ExpiredJwtException e) {

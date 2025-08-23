@@ -6,16 +6,20 @@ import com.brokagefirm.broker.api.response.RoleCreateResponse;
 import com.brokagefirm.broker.exception.BrokerGenericException;
 import com.brokagefirm.broker.mapper.UserServiceMapper;
 import com.brokagefirm.broker.service.UserService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("api/user")
+@SecurityRequirement(name = "BearerAuth")
 public class UserApi {
     private final UserService userService;
     private final UserServiceMapper userServiceMapper;
@@ -27,7 +31,7 @@ public class UserApi {
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")
-    @PostMapping("/user/add-role-to-user")
+    @PostMapping("/role/add-role-to-user")
     public ResponseEntity<Void> addRoleToUser(@RequestBody @Validated AddRoleToUserRequest addRoleToUserRequest) throws BrokerGenericException {
         userService.addRoleToUser(addRoleToUserRequest.getUsername(), addRoleToUserRequest.getRoleName());
         return ResponseEntity.ok().build();

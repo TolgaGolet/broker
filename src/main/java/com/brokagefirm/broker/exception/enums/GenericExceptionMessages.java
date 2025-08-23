@@ -11,6 +11,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum GenericExceptionMessages {
     AUTHORIZATION_HEADER_MISSING("Authorization header is missing"),
+    REFRESH_TOKEN_MISSING("Refresh token is missing"),
     JWT_SUBJECT_MISSING("Token subject is missing"),
     JWT_NOT_VALID("Token is not valid"),
     JWT_EXPIRED("Token is expired"),

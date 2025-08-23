@@ -2,17 +2,17 @@ package com.brokagefirm.broker.mapper;
 
 import com.brokagefirm.broker.api.request.RoleCreateRequest;
 import com.brokagefirm.broker.api.response.RoleCreateResponse;
-import com.brokagefirm.broker.entity.BrokerUser;
+import com.brokagefirm.broker.entity.BrokerCustomer;
 import com.brokagefirm.broker.entity.Role;
-import com.brokagefirm.broker.service.dto.BrokerUserDto;
+import com.brokagefirm.broker.service.dto.BrokerCustomerDto;
 import com.brokagefirm.broker.service.dto.RoleDto;
 import org.mapstruct.Mapper;
 
 import static org.mapstruct.ReportingPolicy.IGNORE;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = IGNORE)
-public interface UserServiceMapper {
-    BrokerUserDto toBrokerUserDto(BrokerUser brokerUser);
+public interface CustomerServiceMapper {
+    BrokerCustomerDto toBrokerCustomerDto(BrokerCustomer brokerCustomer);
 
     RoleDto toRoleDto(Role role);
 

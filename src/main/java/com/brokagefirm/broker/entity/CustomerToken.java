@@ -12,10 +12,10 @@ import lombok.*;
 @AllArgsConstructor
 @Entity
 @Table(indexes = {
-        @Index(columnList = "user_id"),
+        @Index(columnList = "customer_id"),
         @Index(columnList = "token")
 })
-public class UserToken extends Auditable {
+public class CustomerToken extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(unique = true, nullable = false)
@@ -26,9 +26,9 @@ public class UserToken extends Auditable {
     public boolean revoked;
     public boolean expired;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "customer_id")
     @JsonIgnore
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    public BrokerUser user;
+    public BrokerCustomer customer;
 }

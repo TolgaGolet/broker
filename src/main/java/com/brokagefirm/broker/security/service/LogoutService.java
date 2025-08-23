@@ -1,6 +1,6 @@
 package com.brokagefirm.broker.security.service;
 
-import com.brokagefirm.broker.repository.UserTokenRepository;
+import com.brokagefirm.broker.repository.CustomerTokenRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +15,7 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 @Service
 @RequiredArgsConstructor
 public class LogoutService implements LogoutHandler {
-    private final UserTokenRepository userTokenRepository;
+    private final CustomerTokenRepository customerTokenRepository;
 
     @Override
     public void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
@@ -25,12 +25,12 @@ public class LogoutService implements LogoutHandler {
             return;
         }
         jwt = authHeader.substring(7);
-        var storedToken = userTokenRepository.findByToken(jwt)
+        var storedToken = customerTokenRepository.findByToken(jwt)
                 .orElse(null);
         if (storedToken != null) {
             storedToken.setExpired(true);
             storedToken.setRevoked(true);
-            userTokenRepository.save(storedToken);
+            customerTokenRepository.save(storedToken);
             SecurityContextHolder.clearContext();
         }
     }

@@ -8,7 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import static com.brokagefirm.broker.entity.BrokerUser.*;
+import static com.brokagefirm.broker.entity.BrokerCustomer.*;
 
 @Data
 @Builder

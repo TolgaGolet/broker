@@ -1,7 +1,7 @@
 package com.brokagefirm.broker.security.config;
 
 import com.brokagefirm.broker.exception.enums.GenericExceptionMessages;
-import com.brokagefirm.broker.repository.BrokerUserRepository;
+import com.brokagefirm.broker.repository.BrokerCustomerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,12 +17,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 @RequiredArgsConstructor
 public class ApplicationConfig {
-    private final BrokerUserRepository brokerUserRepository;
+    private final BrokerCustomerRepository brokerCustomerRepository;
 
     @Bean
     public UserDetailsService userDetailsService() {
-        return username -> brokerUserRepository.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException(GenericExceptionMessages.USER_NOT_FOUND.getMessage()));
+        return username -> brokerCustomerRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException(GenericExceptionMessages.CUSTOMER_NOT_FOUND.getMessage()));
     }
 
     @Bean

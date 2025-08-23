@@ -21,7 +21,7 @@ import java.util.Set;
 @Table(indexes = {
         @Index(columnList = "username"),
 })
-public class BrokerUser extends Auditable implements UserDetails {
+public class BrokerCustomer extends Auditable implements UserDetails {
     public static final int USERNAME_MIN_LENGTH = 3;
     public static final int USERNAME_MAX_LENGTH = 15;
     public static final String USERNAME_REGULAR_EXPRESSION = "^[a-zA-Z0-9]+$";
@@ -41,10 +41,10 @@ public class BrokerUser extends Auditable implements UserDetails {
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     private Set<Role> roles = new HashSet<>();
-    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "customer", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
-    private List<UserToken> userTokens;
+    private List<CustomerToken> customerTokens;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

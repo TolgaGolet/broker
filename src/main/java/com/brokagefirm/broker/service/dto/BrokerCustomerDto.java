@@ -7,7 +7,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Data
-public class BrokerUserDto {
+public class BrokerCustomerDto {
     private Long id;
     private String username;
     private String password;

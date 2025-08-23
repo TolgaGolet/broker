@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Profile("!disabled-security")
 @RestController
-@RequestMapping("api/auth")
+@RequestMapping("api/v1/auth")
 @RequiredArgsConstructor
 public class AuthenticationApi {
     private final AuthenticationService authenticationService;

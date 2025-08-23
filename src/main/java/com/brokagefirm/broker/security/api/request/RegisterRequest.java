@@ -1,0 +1,25 @@
+package com.brokagefirm.broker.security.api.request;
+
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import static com.brokagefirm.broker.entity.BrokerUser.*;
+
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+public class RegisterRequest {
+    @NotNull
+    @Size(min = USERNAME_MIN_LENGTH, max = USERNAME_MAX_LENGTH)
+    @Pattern(regexp = USERNAME_REGULAR_EXPRESSION)
+    private String username;
+    @NotNull
+    @Pattern(regexp = PASSWORD_REGULAR_EXPRESSION)
+    private String password;
+}

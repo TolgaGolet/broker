@@ -8,6 +8,7 @@ import com.brokagefirm.broker.mapper.CustomerServiceMapper;
 import com.brokagefirm.broker.service.CustomerService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
@@ -27,7 +28,8 @@ public class CustomerApi {
     @PreAuthorize("hasAuthority('ADMIN')")
     @PostMapping("/role/create")
     public ResponseEntity<RoleCreateResponse> createRole(@RequestBody @Validated RoleCreateRequest roleCreateRequest) throws BrokerGenericException {
-        return ResponseEntity.ok(customerServiceMapper.toRoleResponse(customerService.createRole(customerServiceMapper.toRoleDto(roleCreateRequest))));
+        RoleCreateResponse response = customerServiceMapper.toRoleResponse(customerService.createRole(customerServiceMapper.toRoleDto(roleCreateRequest)));
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
     @PreAuthorize("hasAuthority('ADMIN')")

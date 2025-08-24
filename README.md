@@ -94,10 +94,13 @@ yourself before running the application:**
 
 ## 🚀 Installation & Setup & Running the Application
 
-### Step 1: Clone the Repository
+### Step 1: Clone the Repository and Navigate to the Project Directory
 
 ```bash
 git clone https://github.com/TolgaGolet/broker.git
+```
+
+```bash
 cd broker
 ```
 
@@ -113,8 +116,8 @@ cd broker
 ./mvnw spring-boot:run
 ```
 
-The application will start on **http://localhost:8080** by default.
-Go to **http://localhost:8080/swagger-ui/index.html** for Swagger UI.
+- The application will start on **http://localhost:8080** by default.
+- Go to **http://localhost:8080/swagger-ui/index.html** for Swagger UI.
 
 ## 📚 API Documentation
 

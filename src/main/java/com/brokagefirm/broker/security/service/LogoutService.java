@@ -9,7 +9,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.stereotype.Service;
 
-import static com.brokagefirm.broker.security.SecurityParams.BEARER_PREFIX;
+import static com.brokagefirm.broker.security.config.SecurityConfigParams.BEARER_PREFIX;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 @Service

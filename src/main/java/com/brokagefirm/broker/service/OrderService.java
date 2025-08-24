@@ -10,7 +10,9 @@ import org.springframework.data.domain.Page;
 public interface OrderService {
     OrderDto createOrder(OrderCreateRequest orderCreateRequest) throws BrokerGenericException;
 
-    Page<OrderResponse> getCustomerOrders(Long customerId, GetCustomerOrdersRequest request) throws BrokerGenericException;
+    Page<OrderResponse> getCustomerOrders(Long customerId, GetCustomerOrdersRequest request, int pageNo) throws BrokerGenericException;
 
     OrderDto cancelOrder(Long orderId) throws BrokerGenericException;
+
+    OrderDto matchOrder(Long orderId) throws BrokerGenericException;
 }

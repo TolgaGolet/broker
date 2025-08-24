@@ -18,6 +18,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import static com.brokagefirm.broker.entity.audit.AuditAwareImpl.SYSTEM_USER;
@@ -25,7 +26,7 @@ import static com.brokagefirm.broker.entity.audit.AuditAwareImpl.SYSTEM_USER;
 @Profile("!disabled-security")
 @Service
 @RequiredArgsConstructor
-@Transactional
+@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
     private final BrokerCustomerRepository brokerCustomerRepository;
@@ -72,7 +73,6 @@ public class AuthenticationService {
         return user;
     }
 
-    @Transactional
     public AuthenticationResponse authenticate(AuthenticationRequest request) throws BrokerGenericException {
         BrokerCustomer user = authenticateUser(request.getUsername(), request.getPassword());
         return generateTokensAndBuildResponse(user);
@@ -113,7 +113,6 @@ public class AuthenticationService {
         customerTokenRepository.saveAll(validUserTokens);
     }
 
-    @Transactional
     public AuthenticationResponse refreshToken(String refreshToken) throws BrokerGenericException {
         final String username;
         if (refreshToken == null) {

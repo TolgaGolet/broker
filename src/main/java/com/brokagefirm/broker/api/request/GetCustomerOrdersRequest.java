@@ -18,10 +18,10 @@ public class GetCustomerOrdersRequest {
     private String assetName;
     @Size(min = 1, max = 15)
     private String orderSideValue;
-    @Digits(integer = 16, fraction = 2, message = "Invalid size format")
+    @Digits(integer = 16, fraction = 2, message = "Invalid 'size' format")
     @DecimalMin(value = "0.01", message = "Size must be greater than 0.00")
     private BigDecimal size;
-    @Digits(integer = 16, fraction = 2, message = "Invalid price format")
+    @Digits(integer = 16, fraction = 2, message = "Invalid 'price' format")
     @DecimalMin(value = "0.01", message = "Price must be greater than 0.00")
     private BigDecimal price;
     @Size(min = 1, max = 15)
@@ -32,5 +32,4 @@ public class GetCustomerOrdersRequest {
     @Schema(example = "2025-08-20T00:01:06.984")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSX")
     private LocalDateTime endDate;
-    private int pageNo = 0;
 }

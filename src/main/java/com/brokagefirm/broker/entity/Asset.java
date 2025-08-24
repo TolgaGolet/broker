@@ -3,6 +3,7 @@ package com.brokagefirm.broker.entity;
 import com.brokagefirm.broker.entity.audit.Auditable;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
@@ -32,7 +33,11 @@ public class Asset extends Auditable {
     @Column(length = 50)
     private String assetName;
     @NotNull
+    @Column(precision = 18, scale = 2)
+    @Digits(integer = 16, fraction = 2, message = "Invalid 'size' format")
     private BigDecimal size;
     @NotNull
+    @Column(precision = 18, scale = 2)
+    @Digits(integer = 16, fraction = 2, message = "Invalid 'usableSize' format")
     private BigDecimal usableSize;
 }

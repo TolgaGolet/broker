@@ -20,8 +20,8 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.util.Arrays;
 
-import static com.brokagefirm.broker.security.SecurityParams.AUTH_WHITELIST;
-import static com.brokagefirm.broker.security.SecurityParams.BEARER_PREFIX;
+import static com.brokagefirm.broker.security.config.SecurityConfigParams.AUTH_WHITELIST;
+import static com.brokagefirm.broker.security.config.SecurityConfigParams.BEARER_PREFIX;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 @Profile("!disabled-security")

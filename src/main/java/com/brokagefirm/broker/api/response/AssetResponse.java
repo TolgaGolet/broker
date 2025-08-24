@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AssetResponse {
+    private Long id;
     private Long customerId;
     private String assetName;
     private BigDecimal size;

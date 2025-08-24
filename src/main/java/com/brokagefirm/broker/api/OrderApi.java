@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,13 +30,22 @@ public class OrderApi {
     }
 
     @GetMapping("/customer/{customerId}")
-    public ResponseEntity<Page<OrderResponse>> getCustomerOrders(@PathVariable Long customerId, @ModelAttribute @Validated GetCustomerOrdersRequest request) throws BrokerGenericException {
-        return ResponseEntity.ok(orderService.getCustomerOrders(customerId, request));
+    public ResponseEntity<Page<OrderResponse>> getCustomerOrders(@PathVariable Long customerId,
+                                                                 @ModelAttribute @Validated GetCustomerOrdersRequest request,
+                                                                 @RequestParam(name = "pageNo", defaultValue = "0") int pageNo) throws BrokerGenericException {
+        return ResponseEntity.ok(orderService.getCustomerOrders(customerId, request, pageNo));
     }
 
     @DeleteMapping("/{orderId}")
     public ResponseEntity<OrderResponse> cancelOrder(@PathVariable Long orderId) throws BrokerGenericException {
         OrderResponse response = orderServiceMapper.toOrderResponse(orderService.cancelOrder(orderId));
         return new ResponseEntity<>(response, HttpStatus.NO_CONTENT);
+    }
+
+    @PreAuthorize("hasAuthority('ADMIN')")
+    @PatchMapping("/{orderId}")
+    public ResponseEntity<OrderResponse> matchOrder(@PathVariable Long orderId) throws BrokerGenericException {
+        OrderResponse response = orderServiceMapper.toOrderResponse(orderService.matchOrder(orderId));
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

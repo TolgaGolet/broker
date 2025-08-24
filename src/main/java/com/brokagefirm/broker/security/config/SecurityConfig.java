@@ -24,7 +24,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
 
-import static com.brokagefirm.broker.security.SecurityParams.*;
+import static com.brokagefirm.broker.security.config.SecurityConfigParams.*;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 

@@ -11,7 +11,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 
-import static com.brokagefirm.broker.security.SecurityParams.AUTH_WHITELIST;
+import static com.brokagefirm.broker.security.config.SecurityConfigParams.AUTH_WHITELIST;
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
 @Profile("disabled-security")

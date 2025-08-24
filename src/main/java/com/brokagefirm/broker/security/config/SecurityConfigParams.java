@@ -1,12 +1,10 @@
-package com.brokagefirm.broker.security;
-
-import org.springframework.beans.factory.annotation.Value;
+package com.brokagefirm.broker.security.config;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class SecurityParams {
+public class SecurityConfigParams {
     public static final String BEARER_PREFIX = "Bearer ";
     public static final String REGISTER_PATH = "/api/v1/auth/register";
     public static final String LOGIN_PATH = "/api/v1/auth/authenticate";
@@ -26,10 +24,8 @@ public class SecurityParams {
     public static final List<String> CORS_ALLOWED_ORIGINS = new ArrayList<>(Arrays.asList(
             "http://localhost:3000"
     ));
-    @Value("${broker.applicationConfig.defaultPageSize}")
-    public static final int DEFAULT_PAGE_SIZE = 10;
 
-    private SecurityParams() {
-        throw new IllegalStateException("SecurityParams class");
+    private SecurityConfigParams() {
+        throw new IllegalStateException("SecurityConfigParams class constructor called");
     }
 }

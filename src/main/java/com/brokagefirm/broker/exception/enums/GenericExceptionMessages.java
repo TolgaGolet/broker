@@ -25,7 +25,12 @@ public enum GenericExceptionMessages {
     CUSTOMER_ID_CANT_BE_NULL("Customer ID can't be null"),
     NOT_AUTHORIZED_TO_PERFORM("User not authorized to perform this action"),
     ORDER_NOT_FOUND("Order not found"),
-    ORDER_NOT_PENDING("Order is not in PENDING state");
+    ORDER_NOT_PENDING("Order is not in PENDING state"),
+    ASSET_NOT_FOUND("Asset not found"),
+    CANT_CREATE_ORDER_FOR_TRY_ASSET("Can't create order for TRY asset. You can create TRY asset via Asset API"),
+    TRY_ASSET_NOT_FOUND("TRY asset not found"),
+    NOT_ENOUGH_TRY_USABLE_SIZE("Not enough TRY asset usable size"),
+    NOT_ENOUGH_ASSET_USABLE_SIZE("Not enough asset usable size");
 
     private final String message;
 

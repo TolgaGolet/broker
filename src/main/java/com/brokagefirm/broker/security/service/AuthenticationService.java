@@ -132,6 +132,7 @@ public class AuthenticationService {
             throw new BrokerGenericException(GenericExceptionMessages.JWT_NOT_VALID.getMessage());
         }
         var accessToken = jwtService.generateToken(user);
+        refreshToken = jwtService.generateRefreshToken(user);
         revokeAllUserTokens(user);
         saveUserToken(user, accessToken);
         customerTokenRepository.deleteOlderTokensOfCustomerByCount(user.getId(), MAX_USER_TOKEN_COUNT);

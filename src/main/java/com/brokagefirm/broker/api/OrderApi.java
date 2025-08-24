@@ -34,7 +34,7 @@ public class OrderApi {
     }
 
     @DeleteMapping("/{orderId}")
-    public ResponseEntity<OrderResponse> cancelOrder(@PathVariable Long orderId) {
+    public ResponseEntity<OrderResponse> cancelOrder(@PathVariable Long orderId) throws BrokerGenericException {
         OrderResponse response = orderServiceMapper.toOrderResponse(orderService.cancelOrder(orderId));
         return new ResponseEntity<>(response, HttpStatus.NO_CONTENT);
     }

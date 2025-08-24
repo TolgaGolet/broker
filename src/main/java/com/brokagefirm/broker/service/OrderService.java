@@ -12,5 +12,5 @@ public interface OrderService {
 
     Page<OrderResponse> getCustomerOrders(Long customerId, GetCustomerOrdersRequest request) throws BrokerGenericException;
 
-    OrderDto cancelOrder(Long orderId);
+    OrderDto cancelOrder(Long orderId) throws BrokerGenericException;
 }

@@ -18,4 +18,6 @@ public interface CustomerService {
     public BrokerCustomerDto getCurrentLoggedInCustomer();
 
     public void validateCustomerIdIfItsTheCurrentCustomer(Long customerId) throws BrokerGenericException;
+
+    public boolean isCustomerExists(Long customerId) throws BrokerGenericException;
 }

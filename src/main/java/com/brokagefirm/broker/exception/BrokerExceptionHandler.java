@@ -31,6 +31,7 @@ public class BrokerExceptionHandler {
         HttpStatus httpStatus = switch (GenericExceptionMessages.fromMessage(ex.getMessage())) {
             case USERNAME_ALREADY_EXISTS -> HttpStatus.CONFLICT;
             case BAD_USERNAME_OR_PASSWORD, JWT_EXPIRED, NOT_AUTHORIZED_TO_PERFORM -> HttpStatus.UNAUTHORIZED;
+            case CUSTOMER_NOT_FOUND, ROLE_NOT_FOUND, ORDER_NOT_FOUND -> HttpStatus.NOT_FOUND;
             case null, default -> HttpStatus.INTERNAL_SERVER_ERROR;
         };
         return new ResponseEntity<>(errorMessage, httpStatus);

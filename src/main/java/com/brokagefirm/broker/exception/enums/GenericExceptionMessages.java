@@ -23,7 +23,9 @@ public enum GenericExceptionMessages {
     SYSTEM_USERNAME_NOT_ALLOWED("System username cannot be used"),
     ROLE_NAME_ALREADY_EXISTS("Role name already exists"),
     CUSTOMER_ID_CANT_BE_NULL("Customer ID can't be null"),
-    NOT_AUTHORIZED_TO_PERFORM("User not authorized to perform this action");
+    NOT_AUTHORIZED_TO_PERFORM("User not authorized to perform this action"),
+    ORDER_NOT_FOUND("Order not found"),
+    ORDER_NOT_PENDING("Order is not in PENDING state");
 
     private final String message;
 

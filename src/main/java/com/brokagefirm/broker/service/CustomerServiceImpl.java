@@ -77,4 +77,9 @@ public class CustomerServiceImpl implements CustomerService {
             throw new BrokerGenericException(GenericExceptionMessages.NOT_AUTHORIZED_TO_PERFORM.getMessage());
         }
     }
+
+    @Override
+    public boolean isCustomerExists(Long customerId) throws BrokerGenericException {
+        return brokerCustomerRepository.existsById(customerId);
+    }
 }

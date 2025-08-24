@@ -1,41 +1,44 @@
 # Broker Backend Application
 
-A comprehensive backend application for a brokerage firm built with Spring Boot, providing secure APIs for customer management, asset management, and order processing.
+A comprehensive backend application for a brokerage firm built with Spring Boot, providing secure APIs for customer
+management, asset management, and order processing.
 
 ## 🎯 Overview
 
-This broker backend application provides a complete trading platform backend with user authentication, role-based authorization, asset management, and order processing capabilities. The application is designed for brokerage firms to manage their customers, assets, and trading orders efficiently.
+This broker backend application provides a complete trading platform backend with user authentication, role-based
+authorization, asset management, and order processing capabilities. The application is designed for brokerage firms to
+manage their customers, assets, and trading orders efficiently.
 
 ## ✨ Features
 
 - **User Authentication & Authorization**
-  - JWT-based authentication
-  - Role-based access control (ADMIN, USER)
-  - User registration and login
-  - Token refresh functionality
+    - JWT-based authentication
+    - Role-based access control (ADMIN, USER)
+    - User registration and login
+    - Token refresh functionality
 
 - **Customer Management**
-  - Customer registration and management
-  - Role assignment and management
-  - Customer information retrieval
+    - Customer registration and management
+    - Role assignment and management
+    - Customer information retrieval
 
 - **Asset Management**
-  - Create and manage trading assets
-  - View customer assets with filtering
-  - Asset deletion (Admin only)
+    - Create and manage trading assets
+    - View customer assets with filtering
+    - Asset deletion (Admin only)
 
 - **Order Management**
-  - Create buy/sell orders
-  - View customer orders with filtering
-  - Cancel pending orders
-  - Match orders (Admin only)
+    - Create buy/sell orders
+    - View customer orders with filtering
+    - Cancel pending orders
+    - Match orders (Admin only)
 
 - **Additional Features**
-  - Audit trail for all entities
-  - Pagination support
-  - Input validation
-  - Comprehensive error handling
-  - OpenAPI/Swagger documentation
+    - Audit trail for all entities
+    - Pagination support
+    - Input validation
+    - Comprehensive error handling
+    - OpenAPI/Swagger documentation
 
 ## 🛠 Technology Stack
 
@@ -46,9 +49,9 @@ This broker backend application provides a complete trading platform backend wit
 - **Documentation**: OpenAPI 3 (Swagger)
 - **Build Tool**: Maven
 - **Additional Libraries**:
-  - Lombok (boilerplate code reduction)
-  - MapStruct (object mapping)
-  - JJWT (JWT handling)
+    - Lombok (boilerplate code reduction)
+    - MapStruct (object mapping)
+    - JJWT (JWT handling)
 
 ## 📋 Prerequisites
 
@@ -60,25 +63,30 @@ Before running this application, make sure you have the following installed:
 
 ## ⚙️ Configuration
 
-⚠️**The application supports multiple configuration profiles. It uses some default values. You should set the values for yourself before running the application:**
+⚠️**The application supports multiple configuration profiles. It uses some default values. You can set the values for
+yourself before running the application:**
 
 ### Default Profile (`application.properties`)
+
 - Uses the `test` profile by default
 - Suitable for development
 
 ### Test Profile (`application-test.properties`)
+
 - H2 in-memory database
 - JWT security enabled
 - SQL logging enabled
 - H2 console accessible at: http://localhost:8080/h2-console
 
 ### Disabled Security Profile (`application-disabled-security.properties`)
+
 - Security features disabled
 - Useful for testing APIs without authentication
 
 ### Database Configuration (H2)
 
 **Default Connection Details:**
+
 - **H2 Console**: http://localhost:8080/h2-console
 - **JDBC URL**: `jdbc:h2:mem:testdb`
 - **Username**: `sa`
@@ -94,6 +102,7 @@ cd broker
 ```
 
 ### Step 2: Build the Application
+
 ```bash
 ./mvnw clean install
 ```
@@ -128,22 +137,28 @@ The application automatically creates a default admin user on startup:
 3. Use the returned JWT token for subsequent API calls
 
 ---
-**Note**: This application includes an `AdminCustomerInitializer` component that automatically creates the admin user and role on startup. This is intended for development and testing purposes only and should be removed or modified for production deployment.
+**Note**: This application includes an `AdminCustomerInitializer` component that automatically creates the admin user
+and role on startup. This is intended for development and testing purposes only and should be removed or modified for
+production deployment.
 
 ## 🔒 Security
 
 ### JWT Authentication
+
 - Access tokens expire in 60 minutes
 - Refresh tokens expire in 48 hours (2880 minutes)
 - All API endpoints require authentication except registration and login
 
 ### Role-Based Authorization
+
 - **ADMIN**: Full access to all endpoints
 - **USER**: Limited access to their own data and order creation
 - Other roles can also be created on demand
 
 ### API Security Headers
+
 All protected endpoints require:
+
 ```
 Authorization: Bearer <jwt-token>
 ```

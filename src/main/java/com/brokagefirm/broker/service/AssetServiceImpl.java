@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.brokagefirm.broker.service.config.ServiceConfigParams.*;
+import static com.brokagefirm.broker.service.util.BigDecimalUtils.*;
 
 @Service
 @RequiredArgsConstructor
@@ -43,8 +44,8 @@ public class AssetServiceImpl implements AssetService {
         Asset asset = existingAsset.orElseGet(Asset::new);
         asset.setCustomer(BrokerCustomer.builder().id(assetCreateRequest.getCustomerId()).build());
         asset.setAssetName(assetCreateRequest.getAssetName());
-        asset.setSize(existingAsset.isPresent() ? asset.getSize().add(assetCreateRequest.getSize(), MC).setScale(SCALE, ROUNDING_MODE) : assetCreateRequest.getSize().setScale(SCALE, ROUNDING_MODE));
-        asset.setUsableSize(existingAsset.isPresent() ? asset.getUsableSize().add(assetCreateRequest.getUsableSize(), MC).setScale(SCALE, ROUNDING_MODE) : assetCreateRequest.getUsableSize().setScale(SCALE, ROUNDING_MODE));
+        asset.setSize(existingAsset.isPresent() ? add(asset.getSize(), assetCreateRequest.getSize()) : scale(assetCreateRequest.getSize()));
+        asset.setUsableSize(existingAsset.isPresent() ? add(asset.getUsableSize(), assetCreateRequest.getUsableSize()) : scale(assetCreateRequest.getUsableSize()));
 
         return mapper.toAssetDto(assetRepository.saveAndFlush(asset));
     }

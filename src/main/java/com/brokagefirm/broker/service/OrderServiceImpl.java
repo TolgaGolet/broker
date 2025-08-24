@@ -32,7 +32,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import static com.brokagefirm.broker.service.config.ServiceConfigParams.*;
+import static com.brokagefirm.broker.service.config.ServiceConfigParams.DEFAULT_PAGE_SIZE;
+import static com.brokagefirm.broker.service.util.BigDecimalUtils.*;
 
 @Service
 @RequiredArgsConstructor
@@ -52,7 +53,7 @@ public class OrderServiceImpl implements OrderService {
         List<AssetDto> customerAssets = assetService.getCustomerAllAssets(orderCreateRequest.getCustomerId());
         OrderProcessingDto orderProcessingDto = OrderProcessingDto.builder()
                 .customerAssets(customerAssets)
-                .requiredAssetAmount(orderCreateRequest.getSize().multiply(orderCreateRequest.getPrice(), MC).setScale(SCALE, ROUNDING_MODE))
+                .requiredAssetAmount(multiply(orderCreateRequest.getSize(), orderCreateRequest.getPrice()))
                 .tryAsset(customerAssets.stream().filter(asset -> asset.getAssetName().equals(Currency.TRY.getValue())).findFirst().orElseThrow(() -> new BrokerGenericException(GenericExceptionMessages.TRY_ASSET_NOT_FOUND.getMessage())))
                 .assetDto(getOrCreateAssetDto(orderCreateRequest, customerAssets))
                 .build();
@@ -105,14 +106,14 @@ public class OrderServiceImpl implements OrderService {
 
     private void updateAssetUsableSizes(OrderCreateRequest orderCreateRequest, OrderProcessingDto orderProcessingDto) throws BrokerGenericException {
         if (Objects.equals(orderCreateRequest.getOrderSideValue(), OrderSide.BUY.getValue())) {
-            orderProcessingDto.getTryAsset().setUsableSize(orderProcessingDto.getTryAsset().getUsableSize().subtract(orderProcessingDto.getRequiredAssetAmount(), MC).setScale(SCALE, ROUNDING_MODE));
+            orderProcessingDto.getTryAsset().setUsableSize(subtract(orderProcessingDto.getTryAsset().getUsableSize(), orderProcessingDto.getRequiredAssetAmount()));
             assetService.updateAsset(AssetUpdateRequest.builder()
                     .id(orderProcessingDto.getTryAsset().getId())
                     .size(orderProcessingDto.getTryAsset().getSize())
                     .usableSize(orderProcessingDto.getTryAsset().getUsableSize())
                     .build());
         } else if (Objects.equals(orderCreateRequest.getOrderSideValue(), OrderSide.SELL.getValue())) {
-            orderProcessingDto.getAssetDto().setUsableSize(orderProcessingDto.getAssetDto().getUsableSize().subtract(orderCreateRequest.getSize(), MC).setScale(SCALE, ROUNDING_MODE));
+            orderProcessingDto.getAssetDto().setUsableSize(subtract(orderProcessingDto.getAssetDto().getUsableSize(), orderCreateRequest.getSize()));
             assetService.updateAsset(AssetUpdateRequest.builder()
                     .id(orderProcessingDto.getAssetDto().getId())
                     .size(orderProcessingDto.getAssetDto().getSize())
@@ -125,7 +126,7 @@ public class OrderServiceImpl implements OrderService {
         List<AssetDto> customerAssets = assetService.getCustomerAllAssets(canceledOrder.getCustomer().getId());
         if (Objects.equals(canceledOrder.getSide(), OrderSide.BUY)) {
             AssetDto tryAsset = customerAssets.stream().filter(asset -> asset.getAssetName().equals(Currency.TRY.getValue())).findFirst().orElseThrow(() -> new BrokerGenericException(GenericExceptionMessages.TRY_ASSET_NOT_FOUND.getMessage()));
-            tryAsset.setUsableSize(tryAsset.getUsableSize().add(canceledOrder.getSize().multiply(canceledOrder.getPrice(), MC), MC).setScale(SCALE, ROUNDING_MODE));
+            tryAsset.setUsableSize(add(tryAsset.getUsableSize(), multiply(canceledOrder.getSize(), canceledOrder.getPrice())));
             assetService.updateAsset(AssetUpdateRequest.builder()
                     .id(tryAsset.getId())
                     .size(tryAsset.getSize())
@@ -133,7 +134,7 @@ public class OrderServiceImpl implements OrderService {
                     .build());
         } else if (Objects.equals(canceledOrder.getSide(), OrderSide.SELL)) {
             AssetDto assetDto = customerAssets.stream().filter(asset -> asset.getAssetName().equals(canceledOrder.getAssetName())).findFirst().orElseThrow(() -> new BrokerGenericException(GenericExceptionMessages.ASSET_NOT_FOUND.getMessage()));
-            assetDto.setUsableSize(assetDto.getUsableSize().add(canceledOrder.getSize(), MC).setScale(SCALE, ROUNDING_MODE));
+            assetDto.setUsableSize(add(assetDto.getUsableSize(), canceledOrder.getSize()));
             assetService.updateAsset(AssetUpdateRequest.builder()
                     .id(assetDto.getId())
                     .size(assetDto.getSize())
@@ -172,15 +173,15 @@ public class OrderServiceImpl implements OrderService {
         List<AssetDto> customerAssets = assetService.getCustomerAllAssets(order.getCustomer().getId());
         AssetDto tryAsset = customerAssets.stream().filter(asset -> asset.getAssetName().equals(Currency.TRY.getValue())).findFirst().orElseThrow(() -> new BrokerGenericException(GenericExceptionMessages.TRY_ASSET_NOT_FOUND.getMessage()));
         AssetDto assetDto = customerAssets.stream().filter(asset -> asset.getAssetName().equals(order.getAssetName())).findFirst().orElseThrow(() -> new BrokerGenericException(GenericExceptionMessages.ASSET_NOT_FOUND.getMessage()));
-        BigDecimal orderAmount = order.getSize().multiply(order.getPrice(), MC).setScale(SCALE, ROUNDING_MODE);
+        BigDecimal orderAmount = multiply(order.getSize(), order.getPrice());
         if (Objects.equals(order.getSide(), OrderSide.BUY)) {
-            assetDto.setUsableSize(assetDto.getUsableSize().add(order.getSize(), MC).setScale(SCALE, ROUNDING_MODE));
-            assetDto.setSize(assetDto.getSize().add(order.getSize(), MC).setScale(SCALE, ROUNDING_MODE));
-            tryAsset.setSize(tryAsset.getSize().subtract(orderAmount, MC).setScale(SCALE, ROUNDING_MODE));
+            assetDto.setUsableSize(add(assetDto.getUsableSize(), order.getSize()));
+            assetDto.setSize(add(assetDto.getSize(), order.getSize()));
+            tryAsset.setSize(subtract(tryAsset.getSize(), orderAmount));
         } else if (Objects.equals(order.getSide(), OrderSide.SELL)) {
-            tryAsset.setUsableSize(tryAsset.getUsableSize().add(orderAmount, MC).setScale(SCALE, ROUNDING_MODE));
-            tryAsset.setSize(tryAsset.getSize().add(order.getSize().multiply(order.getPrice(), MC), MC).setScale(SCALE, ROUNDING_MODE));
-            assetDto.setSize(assetDto.getSize().subtract(order.getSize(), MC).setScale(SCALE, ROUNDING_MODE));
+            tryAsset.setUsableSize(add(tryAsset.getUsableSize(), orderAmount));
+            tryAsset.setSize(add(tryAsset.getSize(), multiply(order.getSize(), order.getPrice())));
+            assetDto.setSize(subtract(assetDto.getSize(), order.getSize()));
         }
         assetService.updateAsset(AssetUpdateRequest.builder()
                 .id(tryAsset.getId())

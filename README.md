@@ -44,7 +44,7 @@ manage their customers, assets, and trading orders efficiently.
 
 - **Framework**: Spring Boot 3.5.5
 - **Language**: Java 21
-- **Database**: H2 Database (in-memory for development/testing)
+- **Database**: H2 Database (in-memory for development/testing, persistent mode or other databases can be used easily)
 - **Security**: Spring Security with JWT
 - **Documentation**: OpenAPI 3 (Swagger)
 - **Build Tool**: Maven
@@ -63,7 +63,7 @@ Before running this application, make sure you have the following installed:
 
 ## ⚙️ Configuration
 
-⚠️**The application supports multiple configuration profiles. It uses some default values. You can set the values for
+➡️**The application supports multiple configuration profiles. It uses some default values. You can set the values for
 yourself before running the application:**
 
 ### Default Profile (`application.properties`)
@@ -75,7 +75,6 @@ yourself before running the application:**
 
 - H2 in-memory database
 - JWT security enabled
-- SQL logging enabled
 - H2 console accessible at: http://localhost:8080/h2-console
 
 ### Disabled Security Profile (`application-disabled-security.properties`)

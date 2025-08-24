@@ -1,0 +1,29 @@
+# Build outputs
+/target/
+**/target/
+
+# Version control
+/.git
+/.git/
+.gitignore
+.gitattributes
+
+# IDE / tooling
+/.idea/
+/.qodo/
+*.iml
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs / temp
+logs/
+*.log
+/tmp/
+**/tmp/
+*.tmp
+
+# Node (if any accidental additions)
+/node_modules/
+**/node_modules/

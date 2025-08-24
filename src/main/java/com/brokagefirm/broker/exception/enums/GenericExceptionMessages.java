@@ -27,8 +27,8 @@ public enum GenericExceptionMessages {
     ORDER_NOT_FOUND("Order not found"),
     ORDER_NOT_PENDING("Order is not in PENDING state"),
     ASSET_NOT_FOUND("Asset not found"),
-    CANT_CREATE_ORDER_FOR_TRY_ASSET("Can't create order for TRY asset. You can create TRY asset via Asset API"),
-    TRY_ASSET_NOT_FOUND("TRY asset not found"),
+    CANT_CREATE_ORDER_FOR_TRY_ASSET("Can't create order for TRY asset. ADMIN users can create TRY asset via Asset API"),
+    TRY_ASSET_NOT_FOUND("TRY asset not found. ADMIN users can create TRY asset via Asset API"),
     NOT_ENOUGH_TRY_USABLE_SIZE("Not enough TRY asset usable size"),
     NOT_ENOUGH_ASSET_USABLE_SIZE("Not enough asset usable size");
 

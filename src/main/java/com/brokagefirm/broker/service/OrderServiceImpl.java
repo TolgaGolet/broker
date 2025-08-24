@@ -8,6 +8,7 @@ import com.brokagefirm.broker.entity.Order;
 import com.brokagefirm.broker.enums.OrderSide;
 import com.brokagefirm.broker.enums.OrderStatus;
 import com.brokagefirm.broker.exception.BrokerGenericException;
+import com.brokagefirm.broker.exception.enums.GenericExceptionMessages;
 import com.brokagefirm.broker.mapper.OrderServiceMapper;
 import com.brokagefirm.broker.repository.OrderRepository;
 import com.brokagefirm.broker.service.dto.OrderDto;
@@ -19,6 +20,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Objects;
 
 import static com.brokagefirm.broker.security.SecurityParams.DEFAULT_PAGE_SIZE;
 
@@ -36,6 +39,9 @@ public class OrderServiceImpl implements OrderService {
         customerService.validateCustomerIdIfItsTheCurrentCustomer(orderCreateRequest.getCustomerId());
 
         Order order = new Order();
+        if (!customerService.isCustomerExists(orderCreateRequest.getCustomerId())) {
+            throw new BrokerGenericException(GenericExceptionMessages.CUSTOMER_NOT_FOUND.getMessage());
+        }
         order.setCustomer(BrokerCustomer.builder().id(orderCreateRequest.getCustomerId()).build());
         order.setAssetName(orderCreateRequest.getAssetName());
         order.setSide(OrderSide.valueOf(orderCreateRequest.getOrderSideValue()));
@@ -51,12 +57,19 @@ public class OrderServiceImpl implements OrderService {
         customerService.validateCustomerIdIfItsTheCurrentCustomer(customerId);
         Specification<Order> spec = OrderSpecification.search(request, customerId);
         Page<Order> orders = orderRepository.findAll(spec, PageRequest.of(request.getPageNo(), DEFAULT_PAGE_SIZE,
-                Sort.by("status").ascending().and(Sort.by("createdDate").descending())));
+                Sort.by("status").descending().and(Sort.by("createdDate").descending())));
         return orders.map(mapper::toOrderResponse);
     }
 
     @Override
-    public OrderDto cancelOrder(Long orderId) {
-        return null;
+    public OrderDto cancelOrder(Long orderId) throws BrokerGenericException {
+        // TODO: update usable sizes. Throw exception if not enough.
+        Order order = orderRepository.findById(orderId).orElseThrow(() -> new BrokerGenericException(GenericExceptionMessages.ORDER_NOT_FOUND.getMessage()));
+        customerService.validateCustomerIdIfItsTheCurrentCustomer(order.getCustomer().getId());
+        if (!Objects.equals(order.getStatus(), OrderStatus.PENDING)) {
+            throw new BrokerGenericException(GenericExceptionMessages.ORDER_NOT_PENDING.getMessage());
+        }
+        order.setStatus(OrderStatus.CANCELLED);
+        return mapper.toOrderDto(orderRepository.save(order));
     }
 }

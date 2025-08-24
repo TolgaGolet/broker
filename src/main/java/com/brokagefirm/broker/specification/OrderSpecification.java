@@ -37,6 +37,12 @@ public class OrderSpecification {
             if (request.getOrderStatusValue() != null) {
                 predicates.add(criteriaBuilder.equal(root.get("status"), OrderStatus.of(request.getOrderStatusValue())));
             }
+            if (request.getStartDate() != null) {
+                predicates.add(criteriaBuilder.greaterThanOrEqualTo(root.get("createdDate"), request.getStartDate()));
+            }
+            if (request.getEndDate() != null) {
+                predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("createdDate"), request.getEndDate()));
+            }
 
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
         };

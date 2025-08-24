@@ -59,7 +59,7 @@ Before running this application, make sure you have the following installed:
 
 - **Java Development Kit (JDK) 21** or higher
 - **Maven 3.6+** (or use the included Maven wrapper)
-- **Git** (for cloning the repository)
+- or **Docker**
 
 ## ⚙️ Configuration
 
@@ -93,7 +93,9 @@ yourself before running the application:**
 
 ## 🚀 Installation & Setup & Running the Application
 
-### Step 1: Clone the Repository and Navigate to the Project Directory
+### Method 1: Maven Wrapper
+
+#### Step 1: Clone the Repository and Navigate to the Project Directory
 
 ```bash
 git clone https://github.com/TolgaGolet/broker.git
@@ -103,16 +105,40 @@ git clone https://github.com/TolgaGolet/broker.git
 cd broker
 ```
 
-### Step 2: Build the Application
+#### Step 2: Build the Application
 
 ```bash
 ./mvnw clean install
 ```
 
-### Step 3: Run the Application
+#### Step 3: Run the Application
 
 ```bash
 ./mvnw spring-boot:run
+```
+
+### Method 2: Docker
+
+#### Step 1: Clone the Repository and Navigate to the Project Directory
+
+```bash
+git clone https://github.com/TolgaGolet/broker.git
+```
+
+```bash
+cd broker
+```
+
+#### Step 2: Build the Application
+
+```bash
+docker build -t broker:latest .
+```
+
+#### Step 3: Run the Application
+
+```bash
+docker run --rm -p 8080:8080 --name broker broker:latest
 ```
 
 - The application will start on **http://localhost:8080** by default.

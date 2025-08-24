@@ -114,6 +114,7 @@ cd broker
 ```
 
 The application will start on **http://localhost:8080** by default.
+Go to **http://localhost:8080/swagger-ui/index.html** for Swagger UI.
 
 ## 📚 API Documentation
 
